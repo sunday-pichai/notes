@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}Edit Note – Notes{% endblock %}
+
+{% block content %}
+
+<style>
+  .edit-container {
+    max-width: 760px;
+    margin: 40px auto;
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    overflow: hidden;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+
+  .edit-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--outline);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--on-surface);
+    background: var(--surface-variant);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .edit-close {
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.2s;
+  }
+
+  .edit-close:hover {
+    background: rgba(0,0,0,0.08);
+  }
+
+  .edit-form {
+    padding: 24px 24px 16px;
+  }
+
+  .edit-title-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1.625rem;
+    font-weight: 500;
+    color: var(--on-surface);
+    padding: 12px 0 16px;
+  }
+
+  .edit-title-input::placeholder {
+    color: var(--on-surface-variant);
+    opacity: 0.7;
+  }
+
+  .edit-content-textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--on-surface);
+    min-height: 220px;
+    resize: vertical;
+  }
+
+  .edit-content-textarea::placeholder {
+    color: var(--on-surface-variant);
+    opacity: 0.6;
+  }
+
+  .edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--outline);
+    background: var(--surface-variant);
+  }
+
+  .btn-cancel,
+  .btn-update {
+    border: none;
+    border-radius: 28px;
+    padding: 12px 32px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-cancel {
+    background: transparent;
+    color: var(--on-surface-variant);
+  }
+
+  .btn-cancel:hover {
+    background: rgba(0,0,0,0.08);
+  }
+
+  .btn-update {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 8px rgba(51,103,214,0.2);
+  }
+
+  .btn-update:hover {
+    background: #2b5cc4;
+    box-shadow: 0 4px 16px rgba(51,103,214,0.35);
+    transform: translateY(-1px);
+  }
+
+  /* Dark mode tweaks */
+  [data-theme="dark"] .edit-container {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  }
+
+  [data-theme="dark"] .edit-header {
+    background: var(--surface);
+  }
+
+  [data-theme="dark"] .edit-actions {
+    background: var(--surface);
+  }
+
+  [data-theme="dark"] .btn-cancel:hover {
+    background: rgba(255,255,255,0.08);
+  }
+</style>
+
+<div class="edit-container">
+
+  <form method="post" class="edit-form">
+    {% csrf_token %}
+
+    <input 
+      type="text" 
+      name="title" 
+      class="edit-title-input" 
+      placeholder="Title" 
+      value="{{ note.title|default:'' }}" 
+      autofocus
+    >
+
+    <textarea 
+      name="content" 
+      class="edit-content-textarea" 
+      placeholder="Take a note..." 
+      required
+    >{{ note.content|default:'' }}</textarea>
+
+    <div class="edit-actions">
+      <button type="button" class="btn-cancel" onclick="window.location.href='/'">Cancel</button>
+      <button type="submit" class="btn-update">Update</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

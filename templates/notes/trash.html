@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  /* ── TRASH PAGE SPECIFIC ── */
+  .trash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  .trash-title {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--on-surface);
+  }
+
+  .trash-warning {
+    color: var(--on-surface-variant);
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+    max-width: 600px;
+  }
+
+  .btn-empty-trash {
+    background: #d93025;               /* red for destructive action */
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 24px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-empty-trash:hover,
+  .btn-empty-trash:focus {
+    background: #c62828;
+    box-shadow: 0 4px 12px rgba(217,48,37,0.3);
+  }
+
+  .note-actions a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .note-actions a:hover {
+    text-decoration: underline;
+  }
+
+  .note-actions .delete-forever {
+    color: #d93025;
+    font-weight: 600;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--on-surface-variant);
+    font-size: 1.1rem;
+  }
+
+  .empty-state strong {
+    color: var(--on-surface);
+    display: block;
+    margin: 16px 0 8px;
+  }
+</style>
+
+<div class="trash-header">
+  <h1 class="trash-title">Trash</h1>
+
+  {% if notes %}
+    <form method="post" action="/empty-trash/">
+      {% csrf_token %}
+      <button type="submit" class="btn-empty-trash">Empty trash</button>
+    </form>
+  {% endif %}
+</div>
+
+<p class="trash-warning">
+  Notes in trash will be deleted forever after 7 days (or immediately if you empty trash).
+</p>
+
+<div class="notes-grid">
+  {% for note in notes %}
+    <div class="note-card">
+      <div class="note-content">
+        {% if note.title %}
+          <span class="note-title">{{ note.title }}</span>
+        {% endif %}
+        <p class="note-text">{{ note.content }}</p>
+      </div>
+
+      <div class="note-actions">
+        <a href="/restore-note/{{ note.id }}/">Restore</a>
+        <a href="/delete-forever/{{ note.id }}/" class="delete-forever">Delete forever</a>
+      </div>
+    </div>
+  {% empty %}
+    <div class="empty-state" style="grid-column: 1 / -1;">
+      <strong>No notes in trash</strong>
+      <p>Anything you delete will appear here for 7 days before permanent removal.</p>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

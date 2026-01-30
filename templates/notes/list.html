@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  /* ── Centered stream wrapper ── both new note + grid live here ── */
+  .note-stream {
+    max-width: 960px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Content padding adjustment */
+  .content {
+    padding: 24px 32px 48px;
+  }
+
+  /* New note card */
+  .new-note-card {
+    max-width: 100%;
+    margin: 0 0 40px 0;
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06);
+    overflow: hidden;
+    transition: box-shadow 0.25s, transform 0.2s;
+  }
+
+  .new-note-card:hover,
+  .new-note-card:focus-within {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    transform: translateY(-2px);
+  }
+
+  .new-note-inputs {
+    padding: 16px 20px 4px;
+  }
+
+  .new-note-title {
+    width: 100%;
+    border: none;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--on-surface);
+    background: transparent;
+    outline: none;
+    padding: 8px 0 12px 0;
+  }
+
+  .new-note-title::placeholder {
+    color: var(--on-surface-variant);
+    opacity: 0.7;
+  }
+
+  .new-note-content {
+    width: 100%;
+    min-height: 54px;
+    border: none;
+    font-size: 1rem;
+    color: var(--on-surface);
+    background: transparent;
+    outline: none;
+    resize: none;
+    line-height: 1.5;
+    padding-bottom: 12px;
+  }
+
+  .new-note-content::placeholder {
+    color: var(--on-surface-variant);
+    opacity: 0.85;
+  }
+
+  /* ── Bottom actions bar ── improved layout & visibility ── */
+  .new-note-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    border-top: 1px solid var(--outline);
+    background: var(--surface);
+    opacity: 0.55;
+    transition: opacity 0.25s ease;
+  }
+
+  .new-note-card:focus-within .new-note-actions,
+  .new-note-card:hover .new-note-actions {
+    opacity: 1;
+  }
+
+  /* Close button (×) */
+  .btn-icon {
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-variant);
+    font-size: 1.625rem;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+  }
+
+  .btn-icon:hover,
+  .btn-icon:focus-visible {
+    background: var(--surface-variant);
+    color: var(--on-surface);
+  }
+
+  /* Add note button */
+  .btn-add {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 22px;
+    padding: 9px 28px;
+    font-size: 0.94rem;
+    font-weight: 500;
+    cursor: pointer;
+    min-width: 108px;
+    box-shadow: 0 1px 4px rgba(51, 103, 214, 0.18);
+    transition: all 0.2s ease;
+  }
+
+  .btn-add:hover,
+  .btn-add:focus-visible {
+    background: #2b5cc4;
+    box-shadow: 0 3px 10px rgba(51, 103, 214, 0.28);
+    transform: translateY(-1px);
+  }
+
+  .btn-add:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(51, 103, 214, 0.18);
+  }
+
+  /* Empty notes state */
+  .empty-notes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1 / -1;
+    padding: 100px 24px;
+    text-align: center;
+    color: var(--on-surface-variant);
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .empty-notes strong {
+    color: var(--on-surface);
+    display: block;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .empty-notes p {
+    max-width: 400px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Masonry grid */
+  .notes-grid {
+    column-count: 3;
+    column-gap: 24px;
+    margin: 0;
+  }
+
+  .note-card {
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 24px;
+    break-inside: avoid;
+    overflow: hidden;
+    transition: box-shadow 0.25s, transform 0.2s;
+    position: relative;
+  }
+
+  .note-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    transform: translateY(-4px);
+  }
+
+  .note-content {
+    padding: 16px 20px;
+  }
+
+  .note-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+    color: var(--on-surface);
+  }
+
+  .note-text {
+    white-space: pre-wrap;
+    color: var(--on-surface-variant);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .note-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 8px 16px;
+    border-top: 1px solid var(--outline);
+    font-size: 0.875rem;
+  }
+
+  .note-actions a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+
+  .note-actions a:hover {
+    text-decoration: underline;
+  }
+
+  .note-actions .delete {
+    color: #d93025;
+  }
+
+  .note-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .note-link:hover .note-card {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+    transform: translateY(-6px);
+  }
+
+  /* Responsive */
+  @media (max-width: 1200px) { .notes-grid { column-count: 3; } }
+  @media (max-width: 900px)  { .notes-grid { column-count: 2; } }
+  @media (max-width: 600px)  {
+    .notes-grid { column-count: 1; gap: 0; }
+    .content { padding: 12px 12px 96px; }
+
+    .note-stream { max-width: 100%; padding: 0; margin: 0; }
+
+    .new-note-card { border-radius: 12px; margin-bottom: 16px; }
+    .new-note-inputs { padding: 12px; }
+    .new-note-title { font-size: 1rem; padding: 0; }
+    .new-note-content { min-height: 50px; font-size: 0.95rem; padding: 0; }
+    .new-note-actions { padding: 8px 12px; gap: 8px; }
+    .btn-add { padding: 8px 16px; min-width: 80px; font-size: 0.9rem; }
+
+    .note-card { border-radius: 12px; margin-bottom: 12px; break-inside: avoid; }
+    .note-content { padding: 12px; }
+    .note-title { font-size: 1rem; margin-bottom: 6px; }
+    .note-text { font-size: 0.95rem; }
+    .note-actions { padding: 8px 12px; gap: 8px; font-size: 0.85rem; }
+
+    .empty-notes { padding: 80px 16px; font-size: 0.95rem; }
+    .empty-notes strong { font-size: 1.1rem; }
+    .empty-notes p { max-width: 100%; margin: 0; }
+  }
+</style>
+
+<div class="note-stream">
+
+  <div class="new-note-card">
+    <form method="post">
+      {% csrf_token %}
+      <div class="new-note-inputs">
+        <input name="title" class="new-note-title" placeholder="Title" />
+        <textarea name="content" class="new-note-content" 
+                  placeholder="Take a note..." rows="3" required></textarea>
+      </div>
+      <div class="new-note-actions">
+        <button type="button" class="btn-icon" onclick="this.closest('form').reset()">
+          <i class="material-icons">close</i>
+        </button>
+        <button type="submit" class="btn-add">Add note</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="notes-grid">
+    {% for note in notes %}
+      <a href="/edit/{{ note.id }}/" class="note-link">
+        <div class="note-card">
+          <div class="note-content">
+            {% if note.title %}
+              <span class="note-title">{{ note.title }}</span>
+            {% endif %}
+            <p class="note-text">{{ note.content }}</p>
+          </div>
+          <div class="note-actions">
+            {% if note.archived %}
+              <a href="/unarchive-note/{{ note.id }}/" onclick="event.stopPropagation();">Unarchive</a>
+            {% else %}
+              <a href="/archive-note/{{ note.id }}/" onclick="event.stopPropagation();">Archive</a>
+            {% endif %}
+            <a href="/trash-note/{{ note.id }}/" class="delete" onclick="event.stopPropagation();">Delete</a>
+          </div>
+        </div>
+      </a>
+    {% empty %}
+      <div class="empty-notes">
+        <strong>No notes yet</strong>
+        <p>Start writing — your notes will appear here.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}

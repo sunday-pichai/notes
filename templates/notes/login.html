@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notes – Sign in</title>
+
+  <!-- Google Fonts: Roboto Flex for modern variable weights -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300..700&display=swap" rel="stylesheet">
+
+  <!-- Material Icons (for potential future use) -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f6f8fa;
+      --surface: #ffffff;
+      --surface-variant: #f0f2f5;
+      --on-surface: #1f1f1f;
+      --on-surface-variant: #5f6368;
+      --primary: #3367d6;           /* Google blue */
+      --primary-container: #e3f2fd;
+      --outline: #dadce0;
+      --error: #d93025;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto Flex', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--on-surface);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .login-card {
+      background: var(--surface);
+      border-radius: 16px;                /* M3 expressive rounding */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
+      padding: 40px 32px 32px;
+      transition: box-shadow 0.25s, transform 0.2s;
+    }
+
+    .login-card:hover,
+    .login-card:focus-within {
+      box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+      transform: translateY(-4px);
+    }
+
+    .logo-area {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      font-size: 3.5rem;
+      font-weight: 500;
+      color: var(--primary);
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      font-size: 1.125rem;
+      color: var(--on-surface-variant);
+      margin-top: 4px;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 32px;
+      color: var(--on-surface);
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--on-surface-variant);
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--outline);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: var(--surface-variant);
+      color: var(--on-surface);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(51,103,214,0.15);
+    }
+
+    input::placeholder {
+      color: var(--on-surface-variant);
+      opacity: 0.6;
+    }
+
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 0.875rem;
+      color: var(--primary);
+      text-decoration: none;
+      margin-bottom: 24px;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .btn-login {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 24px;               /* pill shape – very 2025 M3 */
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-login:hover,
+    .btn-login:focus {
+      background: #2b5cc4;
+      box-shadow: 0 4px 12px rgba(51,103,214,0.3);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+    }
+
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 32px 24px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-card">
+
+      <div class="logo-area">
+        <div class="logo">Notes</div>
+        <div class="subtitle">Sign in to continue</div>
+      </div>
+
+      <h1>Sign in</h1>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" required autofocus />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required />
+        </div>
+
+        <a href="#" class="forgot-link">Forgot password?</a>
+
+        <button type="submit" class="btn-login">Sign in</button>
+      </form>
+
+      <div class="footer">
+        Not a member? <a href="/signup/" style="color: var(--primary); text-decoration: none;">Create account</a>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
