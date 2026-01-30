@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
   <title>Notes – Sign in</title>
 
   <!-- Google Fonts: Roboto Flex for modern variable weights -->
@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300..700&display=swap" rel="stylesheet">
 
-  <!-- Material Icons (for potential future use) -->
+  <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <style>
@@ -20,10 +20,12 @@
       --surface-variant: #f0f2f5;
       --on-surface: #1f1f1f;
       --on-surface-variant: #5f6368;
-      --primary: #3367d6;           /* Google blue */
+      --primary: #3367d6;
       --primary-container: #e3f2fd;
       --outline: #dadce0;
       --error: #d93025;
+      --error-bg: #fef2f2;
+      --error-border: #fecaca;
     }
 
     * {
@@ -41,6 +43,8 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     .login-container {
@@ -50,7 +54,7 @@
 
     .login-card {
       background: var(--surface);
-      border-radius: 16px;                /* M3 expressive rounding */
+      border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
       padding: 40px 32px 32px;
       transition: box-shadow 0.25s, transform 0.2s;
@@ -68,24 +72,47 @@
     }
 
     .logo {
-      font-size: 3.5rem;
+      font-size: 3rem;
       font-weight: 500;
       color: var(--primary);
       letter-spacing: -1px;
+      line-height: 1;
     }
 
     .subtitle {
-      font-size: 1.125rem;
+      font-size: 1rem;
       color: var(--on-surface-variant);
-      margin-top: 4px;
+      margin-top: 8px;
+      line-height: 1.4;
     }
 
     h1 {
-      font-size: 1.75rem;
+      font-size: 1.625rem;
       font-weight: 500;
       text-align: center;
       margin-bottom: 32px;
       color: var(--on-surface);
+      line-height: 1.2;
+    }
+
+    .error-message {
+      background: var(--error-bg);
+      border: 1px solid var(--error-border);
+      color: var(--error);
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      font-size: 0.875rem;
+      text-align: center;
+      line-height: 1.5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .error-message .material-icons {
+      font-size: 20px;
     }
 
     .form-group {
@@ -98,23 +125,28 @@
       font-weight: 500;
       color: var(--on-surface-variant);
       margin-bottom: 8px;
+      line-height: 1.4;
     }
 
     input {
       width: 100%;
-      padding: 14px 16px;
+      padding: 16px;
       border: 1px solid var(--outline);
       border-radius: 8px;
       font-size: 1rem;
       background: var(--surface-variant);
       color: var(--on-surface);
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
     }
 
     input:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(51,103,214,0.15);
+      background: var(--surface);
     }
 
     input::placeholder {
@@ -122,17 +154,34 @@
       opacity: 0.6;
     }
 
+    /* Remove iOS input zoom */
+    @media screen and (max-width: 640px) {
+      input {
+        font-size: 16px;
+      }
+    }
+
     .forgot-link {
-      display: block;
+      display: inline-block;
       text-align: right;
       font-size: 0.875rem;
       color: var(--primary);
       text-decoration: none;
       margin-bottom: 24px;
+      padding: 4px 0;
+      font-weight: 500;
+      transition: opacity 0.2s;
     }
 
-    .forgot-link:hover {
+    .forgot-link:hover,
+    .forgot-link:focus {
       text-decoration: underline;
+      opacity: 0.8;
+    }
+
+    .forgot-link-wrapper {
+      text-align: right;
+      margin-bottom: 24px;
     }
 
     .btn-login {
@@ -140,12 +189,17 @@
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 24px;               /* pill shape – very 2025 M3 */
-      padding: 14px;
+      border-radius: 24px;
+      padding: 16px;
       font-size: 1rem;
       font-weight: 500;
       cursor: pointer;
-      transition: background 0.2s, box-shadow 0.2s;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
+      touch-action: manipulation;
+      user-select: none;
     }
 
     .btn-login:hover,
@@ -154,17 +208,212 @@
       box-shadow: 0 4px 12px rgba(51,103,214,0.3);
     }
 
+    .btn-login:active {
+      transform: scale(0.98);
+    }
+
     .footer {
       text-align: center;
       margin-top: 32px;
       font-size: 0.875rem;
       color: var(--on-surface-variant);
+      line-height: 1.5;
     }
 
-    @media (max-width: 480px) {
-      .login-card {
-        padding: 32px 24px 24px;
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      padding: 4px 0;
+      margin: 0 4px;
+    }
+
+    .footer a:hover,
+    .footer a:focus {
+      text-decoration: underline;
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 640px) {
+      body {
+        padding: 16px;
+        align-items: flex-start;
+        padding-top: max(24px, env(safe-area-inset-top));
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
       }
+
+      .login-card {
+        padding: 32px 24px 28px;
+        border-radius: 12px;
+        transform: none !important;
+      }
+
+      .login-card:hover,
+      .login-card:focus-within {
+        transform: none !important;
+      }
+
+      .logo-area {
+        margin-bottom: 28px;
+      }
+
+      .logo {
+        font-size: 2.5rem;
+      }
+
+      .subtitle {
+        font-size: 0.9375rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 28px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      input {
+        padding: 14px 16px;
+      }
+
+      .forgot-link-wrapper {
+        margin-bottom: 20px;
+      }
+
+      .btn-login {
+        padding: 15px;
+        font-size: 1rem;
+        min-height: 48px;
+      }
+
+      .footer {
+        margin-top: 28px;
+      }
+
+      /* Stack the footer text on very small screens */
+      @media (max-width: 360px) {
+        .footer {
+          font-size: 0.8125rem;
+        }
+      }
+    }
+
+    /* Extra small devices */
+    @media (max-width: 375px) {
+      .login-card {
+        padding: 28px 20px 24px;
+      }
+
+      .logo {
+        font-size: 2.25rem;
+      }
+
+      h1 {
+        font-size: 1.375rem;
+      }
+    }
+
+    /* Landscape mobile devices */
+    @media (max-width: 900px) and (orientation: landscape) {
+      body {
+        padding: 12px;
+        align-items: flex-start;
+      }
+
+      .login-card {
+        padding: 24px 28px;
+      }
+
+      .logo-area {
+        margin-bottom: 20px;
+      }
+
+      .logo {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 0.875rem;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        font-size: 1.375rem;
+      }
+
+      .form-group {
+        margin-bottom: 18px;
+      }
+
+      input {
+        padding: 12px 14px;
+      }
+
+      .forgot-link-wrapper {
+        margin-bottom: 18px;
+      }
+
+      .btn-login {
+        padding: 13px;
+      }
+
+      .footer {
+        margin-top: 20px;
+      }
+    }
+
+    /* Focus visible styles for accessibility */
+    input:focus-visible,
+    .btn-login:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Smooth scrolling for mobile */
+    html {
+      scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Prevent text size adjustment on orientation change */
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    /* Password visibility toggle (optional enhancement) */
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+
+    .password-toggle:hover,
+    .password-toggle:focus {
+      background: rgba(0,0,0,0.05);
+    }
+
+    .password-toggle .material-icons {
+      font-size: 20px;
     }
   </style>
 </head>
@@ -180,26 +429,55 @@
 
       <h1>Sign in</h1>
 
-      <form method="post">
+      {% if error %}
+        <div class="error-message">
+          <i class="material-icons">error_outline</i>
+          <span>{{ error }}</span>
+        </div>
+      {% endif %}
+
+      <form method="post" autocomplete="on">
         {% csrf_token %}
 
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" id="username" name="username" placeholder="Enter your username" required autofocus />
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            placeholder="Enter your username" 
+            autocomplete="username"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            required 
+            autofocus 
+          />
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Enter your password" required />
+          <div class="password-wrapper">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder="Enter your password" 
+              autocomplete="current-password"
+              required 
+            />
+          </div>
         </div>
 
-        <a href="#" class="forgot-link">Forgot password?</a>
+        <div class="forgot-link-wrapper">
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
 
         <button type="submit" class="btn-login">Sign in</button>
       </form>
 
       <div class="footer">
-        Not a member? <a href="/signup/" style="color: var(--primary); text-decoration: none;">Create account</a>
+        Not a member? <a href="/signup/">Create account</a>
       </div>
 
     </div>
