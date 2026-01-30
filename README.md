@@ -9,8 +9,7 @@ A lightweight, mobile-optimized note-taking Django app with user authentication,
 - ✅ **Archive System**: Archive notes for later retrieval
 - ✅ **Trash Management**: Soft delete with restore functionality
 - ✅ **Search Functionality**: Search notes by title or content in real-time
-- ✅ **User Profiles**: Auto-generated profiles with SVG avatar system (based on user initials)
-- ✅ **Note Customization**: Color-coded notes and pinning support
+- ✅ **User Profiles**: Edit first and last name
 - ✅ **Dark Mode Support**: Dark theme for better accessibility
 - ✅ **Mobile-Optimized UI**: Off-canvas sidebar and responsive design
 - ✅ **Timestamps**: Track note creation and modification dates
@@ -105,23 +104,10 @@ See `.env.example` for all available configuration options:
 - `user`: Foreign Key to User (cascade delete)
 - `title`: CharField (max 200 chars, can be blank)
 - `content`: TextField (required)
-- `color`: CharField (default: #ffffff) for note color coding
-- `pinned`: BooleanField (default: False) for pinning notes
 - `created_at`: Auto-generated timestamp
 - `updated_at`: Auto-updated on save
 - `archived`: BooleanField (default: False) for archiving notes
 - `trashed`: BooleanField (default: False) for soft delete
-
-### Profile
-- `user`: OneToOne relationship to User (cascade delete)
-- `profile_picture`: ImageField pointing to auto-generated SVG avatars
-
-## Avatar System
-
-- User profiles automatically get SVG avatars based on their initials (first name → last name → username)
-- Avatars are pre-made SVG files stored in `static/avatars/` directory
-- Named as `[INITIAL].svg` (e.g., `A.svg`, `B.svg`, etc.)
-- Automatically assigned on user signup via Django signals
 
 ## Production Notes
 
@@ -136,7 +122,7 @@ See `.env.example` for all available configuration options:
 ```
 notes_project/
 ├── notes/                 # Main Django app
-│   ├── models.py         # Note, Profile models with signal handlers
+│   ├── models.py         # Note model
 │   ├── views.py          # Note CRUD, archive, trash, restore views
 │   ├── urls.py           # URL routing
 │   ├── forms.py          # Profile form
@@ -145,10 +131,7 @@ notes_project/
 ├── templates/            # HTML templates
 │   ├── base.html         # Base layout with navigation
 │   └── notes/            # App-specific templates (list, edit, profile, login, signup, trash)
-├── static/               # CSS, JS, avatars
-│   └── avatars/         # Pre-made SVG avatar files
-├── media/               # User-uploaded media (profile pictures)
-├── manage.py            # Django CLI
+├── static/               # CSS, JS
 ├── Procfile             # Render deployment config
 ├── requirements.txt     # Python dependencies
 ├── .env.example         # Environment variables template
@@ -162,8 +145,7 @@ notes_project/
 - **Image Processing**: Pillow (for avatar handling)
 - **Deployment**: Gunicorn, WhiteNoise, Render
 - **Database**: SQLite (development), PostgreSQL recommended (production)
-
-## Key Endpoints
+ey Endpoints
 
 - `GET /` - List all active notes
 - `POST /` - Create a new note
