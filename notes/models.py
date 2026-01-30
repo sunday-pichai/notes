@@ -11,8 +11,6 @@ class Note(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, blank=True)
     content = models.TextField()
-    color = models.CharField(max_length=20, default='#ffffff')
-    pinned = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     archived = models.BooleanField(default=False)
