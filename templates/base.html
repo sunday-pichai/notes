@@ -36,7 +36,11 @@
       --selected: #3c4043;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
 
     body {
       font-family: 'Roboto Flex', system-ui, sans-serif;
@@ -58,7 +62,7 @@
       border-bottom: 1px solid var(--outline);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 50;
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
       transition: background 0.3s;
     }
@@ -69,20 +73,18 @@
       padding: 8px;
       border-radius: 50%;
       transition: background 0.2s;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .menu-btn:hover {
       background: rgba(0,0,0,0.05);
     }
 
-    /* Mobile-specific header layout */
-    @media (max-width: 640px) {
-      .app-bar { padding: 0 12px; gap: 8px; }
-      .app-brand { font-size: 1rem; }
-      .search-container { display: none; }
-      .right-group { gap: 8px; }
-      .avatar-link { width: 36px; height: 36px; }
-      .user-name { display: none; }
+    [data-theme="dark"] .menu-btn:hover {
+      background: rgba(255,255,255,0.1);
     }
 
     .app-brand {
@@ -98,7 +100,7 @@
       max-width: 720px;
       height: 48px;
       background: var(--surface-variant);
-      border-radius: 28px;
+      border-radius: 24px;
       display: flex;
       align-items: center;
       padding: 0 16px;
@@ -106,9 +108,15 @@
       transition: all 0.2s;
     }
 
-    .search-container:hover, .search-container:focus-within {
+    .search-container:hover, 
+    .search-container:focus-within {
       background: var(--surface);
       box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+    }
+
+    [data-theme="dark"] .search-container:hover,
+    [data-theme="dark"] .search-container:focus-within {
+      box-shadow: 0 1px 6px rgba(0,0,0,0.4);
     }
 
     .search-input {
@@ -120,39 +128,63 @@
       outline: none;
     }
 
-    .search-input::placeholder { color: var(--on-surface-variant); }
+    .search-input::placeholder { 
+      color: var(--on-surface-variant); 
+    }
 
     .right-group {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
-    /* Mobile search button + overlay */
-    .mobile-search-btn { display: none; }
+    .mobile-search-btn { 
+      display: none; 
+    }
+
     .mobile-search-overlay {
       display: none;
       position: fixed;
-      top: 8px;
-      left: 8px;
-      right: 8px;
+      top: 12px;
+      left: 12px;
+      right: 12px;
       z-index: 60;
       background: var(--surface);
       border-radius: 28px;
-      padding: 8px 12px;
+      padding: 10px 12px 10px 16px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.3);
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+      height: 56px;
     }
 
-    .mobile-search-overlay.active { display: flex; }
+    .mobile-search-overlay.active { 
+      display: flex; 
+    }
 
-    .mobile-search-input { flex: 1; border: none; background: transparent; outline: none; font-size: 1rem; }
+    .mobile-search-input { 
+      flex: 1; 
+      border: none; 
+      background: transparent; 
+      outline: none; 
+      font-size: 1rem;
+      color: var(--on-surface);
+      line-height: 1.5;
+      padding: 0;
+    }
 
-    .user-info-left { display: flex; align-items: center; gap: 12px; text-align: left; }
+    .mobile-search-input::placeholder {
+      color: var(--on-surface-variant);
+    }
+
+    .user-info-left { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+    }
 
     .user-name {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: var(--on-surface);
       max-width: 140px;
@@ -161,10 +193,14 @@
       white-space: nowrap;
     }
 
-    .avatar-wrapper { position: relative; }
+    .avatar-wrapper { 
+      position: relative; 
+    }
 
     .avatar-link {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -185,7 +221,7 @@
     .avatar-edit-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.5);
       color: white;
       display: flex;
       align-items: center;
@@ -193,11 +229,16 @@
       opacity: 0;
       transition: opacity 0.2s;
       pointer-events: none;
+      border-radius: 50%;
     }
 
-    .avatar-link:hover .avatar-edit-overlay { opacity: 1; }
+    .avatar-link:hover .avatar-edit-overlay { 
+      opacity: 1; 
+    }
 
-    .avatar-edit-overlay .material-icons { font-size: 1.8rem; }
+    .avatar-edit-overlay .material-icons { 
+      font-size: 1.5rem; 
+    }
 
     .theme-toggle {
       color: var(--on-surface-variant);
@@ -205,37 +246,46 @@
       padding: 8px;
       border-radius: 50%;
       transition: background 0.2s;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .theme-toggle:hover { background: rgba(0,0,0,0.05); }
+    .theme-toggle:hover { 
+      background: rgba(0,0,0,0.05); 
+    }
+
+    [data-theme="dark"] .theme-toggle:hover {
+      background: rgba(255,255,255,0.1);
+    }
 
     /* ── Layout ── */
     .layout {
       display: flex;
-      min-height: calc(100vh - 64px);
+      min-height: calc(100vh - var(--header-height));
     }
 
     .sidebar {
       width: 280px;
       background: var(--surface);
       border-right: 1px solid var(--outline);
-      padding: 12px 0;
-      transition: width 0.35s ease;
+      padding: 16px 0;
+      transition: width 0.3s ease;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .sidebar.collapsed {
       width: 80px;
     }
 
-    /* Removed the separate sidebar-header - no longer needed */
-
     .sidebar-link {
       display: flex;
       align-items: center;
       gap: 20px;
       padding: 12px 24px;
-      margin: 4px 16px;
+      margin: 4px 12px;
       border-radius: 50px;
       color: var(--on-surface-variant);
       text-decoration: none;
@@ -256,6 +306,11 @@
       font-weight: 600;
     }
 
+    [data-theme="dark"] .sidebar-link.active {
+      background: var(--selected);
+      color: var(--on-surface);
+    }
+
     .sidebar-icon {
       width: 24px;
       height: 24px;
@@ -268,23 +323,18 @@
 
     .sidebar-text {
       white-space: nowrap;
-      transition: opacity 0.3s, width 0.3s;
+      transition: opacity 0.3s;
       overflow: hidden;
     }
 
-    /* Collapsed sidebar styles */
     .sidebar.collapsed .sidebar-link {
       justify-content: center;
-      padding: 16px;
+      padding: 12px;
       margin: 8px auto;
       width: 56px;
       height: 56px;
       border-radius: 50%;
       gap: 0;
-    }
-
-    .sidebar.collapsed .sidebar-link.active {
-      background: var(--selected);
     }
 
     .sidebar.collapsed .sidebar-text {
@@ -297,6 +347,7 @@
       padding: 24px 32px 48px;
       max-width: 1400px;
       margin: 0 auto;
+      width: 100%;
     }
 
     .notes-grid {
@@ -305,43 +356,167 @@
       margin: 0;
     }
 
-    @media (max-width: 1200px) { .notes-grid { column-count: 3; } }
-    @media (max-width: 900px)  { .notes-grid { column-count: 2; } }
-    @media (max-width: 600px)  {
-      /* Off-canvas sidebar for mobile: hidden by default, slides in when .mobile-open */
-      .sidebar {
-      .search-container { display: none; }
-      .mobile-search-btn { display: inline-flex; align-items: center; justify-content: center; padding: 8px; border-radius: 50%; cursor: pointer; }
-        left: 0;
-        top: 64px;
-        bottom: 0;
-        width: 80%;
-        max-width: 320px;
-        transform: translateX(-110%);
-        transition: transform 0.28s ease;
-        z-index: 50;
-        display: block;
-        padding-top: 12px;
-        overflow-y: auto;
-        box-shadow: 2px 0 12px rgba(0,0,0,0.16);
-        background: var(--surface);
+    @media (max-width: 1200px) { 
+      .notes-grid { column-count: 3; } 
+    }
+
+    @media (max-width: 900px) { 
+      .notes-grid { column-count: 2; } 
+    }
+
+    /* Mobile Bottom Navigation - hidden by default */
+    .mobile-nav-bottom {
+      display: none;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 640px) {
+      /* Hide desktop sidebar */
+      .sidebar { 
+        display: none; 
       }
 
-      .sidebar.mobile-open { transform: translateX(0); }
+      /* Adjust header */
+      .app-bar { 
+        padding: 0 12px; 
+        gap: 12px; 
+      }
 
-      .content { padding: 16px; }
-      .notes-grid { column-count: 1; }
+      .app-brand { 
+        font-size: 1.125rem; 
+      }
 
-      /* overlay shown when mobile sidebar is open */
+      .search-container { 
+        display: none; 
+      }
+
+      .right-group { 
+        gap: 8px; 
+        margin-left: auto;
+      }
+
+      .avatar-link { 
+        width: 36px; 
+        height: 36px; 
+      }
+
+      .user-name { 
+        display: none; 
+      }
+
+      .mobile-search-btn { 
+        display: inline-flex; 
+        align-items: center; 
+        justify-content: center; 
+        padding: 8px; 
+        border-radius: 50%; 
+        cursor: pointer;
+        color: var(--on-surface-variant);
+      }
+
+      /* Content adjustments */
+      .content { 
+        padding: 16px 12px 100px 12px;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+      }
+
+      /* Single column for mobile */
+      .notes-grid { 
+        column-count: 1; 
+        column-gap: 0; 
+      }
+
+      /* Mobile Bottom Navigation */
+      .mobile-nav-bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 72px;
+        background: var(--surface);
+        border-top: 1px solid var(--outline);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 100;
+        padding: 0 8px;
+        padding-bottom: env(safe-area-inset-bottom);
+        box-shadow: 0 -1px 3px rgba(0,0,0,0.08);
+      }
+
+      .nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--on-surface-variant);
+        font-size: 0.7rem;
+        font-weight: 500;
+        transition: all 0.2s;
+        cursor: pointer;
+        padding: 8px 4px;
+        border-radius: 12px;
+        background: none;
+        border: none;
+        font-family: inherit;
+      }
+
+      .nav-item .material-icons {
+        font-size: 24px;
+        transition: all 0.2s;
+      }
+
+      .nav-item.active {
+        color: var(--primary);
+      }
+
+      .nav-item.active .material-icons {
+        color: var(--primary);
+      }
+
+      .nav-item:active {
+        background: var(--surface-variant);
+        transform: scale(0.95);
+      }
+
+      /* Mobile overlay */
       .mobile-overlay {
         display: none;
         position: fixed;
-        inset: 64px 0 0 0;
-        background: rgba(0,0,0,0.45);
+        inset: var(--header-height) 0 0 0;
+        background: rgba(0,0,0,0.5);
         z-index: 40;
       }
 
-      .mobile-overlay.active { display: block; }
+      .mobile-overlay.active { 
+        display: block; 
+      }
+
+      .mobile-search-overlay {
+        top: 76px;
+        left: 12px;
+        right: 12px;
+      }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 24px 0;
+      color: var(--on-surface-variant);
+      font-size: 0.875rem;
+      background: var(--bg);
+    }
+
+    @media (max-width: 640px) {
+      footer {
+        padding: 16px 0 88px 0;
+      }
     }
   </style>
 </head>
@@ -362,6 +537,8 @@
     <div class="right-group">
       {% if user.is_authenticated %}
       <div class="user-info-left">
+        <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
+        
         <a href="{% url 'profile' %}" class="avatar-link">
           {% if profile and profile.profile_picture %}
             <img src="{{ profile.profile_picture.url }}" alt="Profile" class="avatar-img">
@@ -372,23 +549,47 @@
             <i class="material-icons">edit</i>
           </div>
         </a>
-
-        <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
       </div>
       {% endif %}
-      <i class="material-icons mobile-search-btn" id="mobileSearchBtn" onclick="openMobileSearch()" title="Search">search</i>
+      
+      <i class="material-icons mobile-search-btn" onclick="openMobileSearch()" title="Search">search</i>
       <i class="material-icons theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">brightness_6</i>
     </div>
   </header>
 
   <div id="mobile-overlay" class="mobile-overlay" onclick="closeMobileSidebar()"></div>
+  
   <div id="mobile-search" class="mobile-search-overlay" role="dialog" aria-hidden="true">
-    <i class="material-icons" onclick="closeMobileSearch()" style="cursor:pointer;color:var(--on-surface-variant);">arrow_back</i>
-    <form method="get" action="{% url 'notes' %}" style="flex:1;display:flex;align-items:center;">
-      <input name="q" class="mobile-search-input" placeholder="Search Notes" value="{{ request.GET.q|default:'' }}" />
-      <button type="submit" style="background:none;border:none;color:var(--primary);padding:8px 12px;border-radius:20px;">Search</button>
+    <i class="material-icons" onclick="closeMobileSearch()" style="cursor:pointer;color:var(--on-surface-variant);display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;">arrow_back</i>
+    <form method="get" action="{% url 'notes' %}" style="flex:1;display:flex;align-items:center;gap:12px;height:100%;">
+      <input name="q" class="mobile-search-input" placeholder="Search Notes" value="{{ request.GET.q|default:'' }}" autocomplete="off" />
+      <button type="submit" style="background:var(--primary);color:white;border:none;padding:10px 20px;border-radius:24px;font-weight:500;cursor:pointer;font-size:0.95rem;white-space:nowrap;flex-shrink:0;height:40px;display:flex;align-items:center;justify-content:center;">Search</button>
     </form>
   </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-nav-bottom">
+    <a href="/" class="nav-item {% if request.path == '/' %}active{% endif %}">
+      <i class="material-icons">lightbulb</i>
+      <span>Notes</span>
+    </a>
+    <button class="nav-item" onclick="openMobileSearch()" title="Search">
+      <i class="material-icons">search</i>
+      <span>Search</span>
+    </button>
+    <a href="/archive/" class="nav-item {% if 'archive' in request.path %}active{% endif %}">
+      <i class="material-icons">archive</i>
+      <span>Archive</span>
+    </a>
+    <a href="/trash/" class="nav-item {% if 'trash' in request.path %}active{% endif %}">
+      <i class="material-icons">delete</i>
+      <span>Trash</span>
+    </a>
+    <a href="{% url 'profile' %}" class="nav-item">
+      <i class="material-icons">person</i>
+      <span>Profile</span>
+    </a>
+  </nav>
 
   <div class="layout">
     <nav class="sidebar" id="sidebar">
@@ -410,7 +611,8 @@
       {% block content %}{% endblock %}
     </main>
   </div>
-  <footer style="text-align:center;padding:12px 0;color:var(--on-surface-variant);font-size:0.9rem">
+
+  <footer>
     Made by Kamalesh
   </footer>
 
@@ -418,50 +620,36 @@
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('mobile-overlay');
-      // On small screens, open/close the off-canvas sidebar
+      
+      // On small screens, this button does nothing (sidebar is hidden)
       if (window.innerWidth <= 640) {
-        const opening = !sidebar.classList.contains('mobile-open');
-        sidebar.classList.toggle('mobile-open');
-        overlay.classList.toggle('active', opening);
-        // prevent body scroll when open
-        document.body.style.overflow = opening ? 'hidden' : '';
+        return;
       } else {
-        // desktop behaviour: collapse sidebar
+        // Desktop: collapse sidebar
         sidebar.classList.toggle('collapsed');
       }
     }
 
     function closeMobileSidebar() {
-      const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('mobile-overlay');
-      sidebar.classList.remove('mobile-open');
       overlay.classList.remove('active');
       document.body.style.overflow = '';
     }
 
-    // Ensure overlay removed when resizing to desktop
-    window.addEventListener('resize', () => {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('mobile-overlay');
-      if (window.innerWidth > 640) {
-        sidebar.classList.remove('mobile-open');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    });
-
     function openMobileSearch() {
-      const s = document.getElementById('mobile-search');
-      s.classList.add('active');
-      s.setAttribute('aria-hidden', 'false');
-      const input = s.querySelector('.mobile-search-input');
-      if (input) input.focus();
+      const searchOverlay = document.getElementById('mobile-search');
+      searchOverlay.classList.add('active');
+      searchOverlay.setAttribute('aria-hidden', 'false');
+      const input = searchOverlay.querySelector('.mobile-search-input');
+      if (input) {
+        setTimeout(() => input.focus(), 100);
+      }
     }
 
     function closeMobileSearch() {
-      const s = document.getElementById('mobile-search');
-      s.classList.remove('active');
-      s.setAttribute('aria-hidden', 'true');
+      const searchOverlay = document.getElementById('mobile-search');
+      searchOverlay.classList.remove('active');
+      searchOverlay.setAttribute('aria-hidden', 'true');
     }
 
     function toggleTheme() {
@@ -472,13 +660,24 @@
       localStorage.setItem('theme', newTheme);
     }
 
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
+    // Load saved theme on page load
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      const overlay = document.getElementById('mobile-overlay');
+      if (window.innerWidth > 640) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
   </script>
 
 </body>
